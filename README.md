@@ -1,14 +1,16 @@
-﻿# azure cloud soc lab
+﻿## Azure Cloud SOC Lab
 
-SOC in Azure with Microsoft Sentinel and Defender for Endpoint.
-Work in progress.
+A small security operations center in Azure. Logs from a Windows VM flow into a Log Analytics workspace, Microsoft Sentinel raises alerts from custom KQL rules, and Defender for Endpoint covers the host. Work in progress.
 
-## plan
-- log analytics workspace + sentinel
-- windows vm sending security events
-- onboard the vm to defender for endpoint
-- detection rules in kql
-- investigate the incidents and write them up
+**Stack:** Microsoft Sentinel, Microsoft Defender for Endpoint, Log Analytics, Azure Monitor Agent, KQL
 
-## status
-- 18 oct: repo created, reading Unified SecOps Playbook ch 4 and 8 before starting
+### How it works
+
+- **Workspace:** one Log Analytics workspace in East US with Microsoft Sentinel enabled on top of it. A budget alert on the subscription keeps the lab cost in check.
+
+### What's next
+
+- Connect Azure Activity, Entra ID and Defender XDR
+- Windows VM sending Security events through the Azure Monitor Agent
+- Onboard the VM to Defender for Endpoint
+- First detection rules in KQL
