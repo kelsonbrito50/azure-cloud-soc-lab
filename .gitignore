@@ -1,0 +1,17 @@
+﻿# Secrets and local files
+*.env
+*.key
+*.pem
+*.pfx
+*.publishsettings
+terraform.tfstate*
+.terraform/
+# Raw log exports - summarize, don't commit
+*.csv
+*.json
+!detections/*.json
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
