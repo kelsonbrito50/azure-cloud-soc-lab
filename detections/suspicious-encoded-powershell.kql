@@ -1,0 +1,26 @@
+// Rule name:      PowerShell launched with an encoded command
+// Detects:        powershell.exe or pwsh.exe started with -EncodedCommand / -enc / -e and a Base64 payload.
+//                 Common in malware droppers and offensive tooling; rare in normal admin use.
+// Data source:    SecurityEvent (Event ID 4688 with command-line auditing enabled) via Windows Security Events (AMA).
+//                 Alternative: DeviceProcessEvents via the Microsoft Defender XDR connector (see second query).
+// MITRE ATT&CK:   Execution / T1059.001 PowerShell; Defense Evasion / T1027 Obfuscated Files or Information
+// Severity:       Medium
+// Schedule:       runs every 5 min, looks back 5 min
+// Threshold:      generate alert when results > 0
+// Entity mapping: Account = Account, Host = Computer, Process = NewProcessName
+// Tested:         [YYYY-MM-DD] - triggered with: powershell -enc <base64 of "Write-Host test">
+// Tuning notes:   4688 needs "Include command line in process creation events" enabled via local/group policy.
+
+SecurityEvent
+| where TimeGenerated > ago(5m)
+| where EventID == 4688
+| where NewProcessName has_any ("powershell.exe", "pwsh.exe")
+| where CommandLine matches regex @"(?i)\s-(e|ec|en|enc|enco|encod|encode|encoded|encodedcommand)\s+[A-Za-z0-9+/=]{20,}"
+| project TimeGenerated, Computer, Account, NewProcessName, CommandLine, ParentProcessName
+
+// --- Alternative using Defender XDR data (DeviceProcessEvents) ---
+// DeviceProcessEvents
+// | where TimeGenerated > ago(5m)
+// | where FileName in~ ("powershell.exe", "pwsh.exe")
+// | where ProcessCommandLine matches regex @"(?i)\s-(e|ec|en|enc|enco|encod|encode|encoded|encodedcommand)\s+[A-Za-z0-9+/=]{20,}"
+// | project TimeGenerated, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName

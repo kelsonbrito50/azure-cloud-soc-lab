@@ -1,0 +1,17 @@
+// Rule name:      [Name as shown in Sentinel]
+// Detects:        [One sentence describing the behaviour]
+// Data source:    [Table] via [connector]
+// MITRE ATT&CK:   [Tactic] / [TXXXX Technique name]
+// Severity:       [Low | Medium | High]
+// Schedule:       runs every [N] min, looks back [N] min
+// Threshold:      generate alert when results > 0
+// Entity mapping: Account = [column], Host = [column], IP = [column]
+// Tested:         [YYYY-MM-DD] - triggered by [method]
+// Tuning notes:   [exclusions and why]
+
+[TableName]
+| where TimeGenerated > ago([N]m)
+| where [condition]
+| summarize Count = count(), FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated)
+    by [Account], [Computer], [IpAddress]
+| where Count >= [threshold]

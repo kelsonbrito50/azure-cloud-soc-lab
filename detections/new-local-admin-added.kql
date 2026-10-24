@@ -1,0 +1,18 @@
+// Rule name:      Account added to local Administrators group
+// Detects:        A member was added to a security-enabled local group (Event ID 4732)
+//                 where the group is Administrators. Persistence or privilege escalation.
+// Data source:    SecurityEvent via Windows Security Events (AMA)
+// MITRE ATT&CK:   Persistence / T1098 Account Manipulation; Privilege Escalation / T1078.003 Local Accounts
+// Severity:       High
+// Schedule:       runs every 5 min, looks back 5 min
+// Threshold:      generate alert when results > 0
+// Entity mapping: Account = MemberName (added account), Host = Computer; SubjectAccount = who did it
+// Tested:         [YYYY-MM-DD] - triggered with: net localgroup Administrators testuser /add
+// Tuning notes:   none expected in a lab; in production exclude approved provisioning accounts.
+
+SecurityEvent
+| where TimeGenerated > ago(5m)
+| where EventID == 4732
+| where TargetUserName =~ "Administrators"
+| extend SubjectAccount = strcat(SubjectDomainName, @"\", SubjectUserName)
+| project TimeGenerated, Computer, SubjectAccount, MemberName, MemberSid, TargetUserName
