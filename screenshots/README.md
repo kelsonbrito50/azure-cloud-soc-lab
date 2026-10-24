@@ -1,6 +1,6 @@
 # Screenshots
 
-Capture these as you go. Blur subscription ID, tenant ID, public IPs, and your personal account name/email before committing.
+Capture these as you go. Cover subscription ID, tenant ID, device IDs, public IPs, MAC addresses, and your personal account name/email with solid black bars (not blur) before committing. Export each image as PNG with metadata removed.
 
 | File name | What to show | Used in |
 |-----------|--------------|---------|
@@ -9,6 +9,7 @@ Capture these as you go. Blur subscription ID, tenant ID, public IPs, and your p
 | `02-sentinel-overview.png` | Microsoft Sentinel > Overview, showing events ingested and incidents | Step 2 |
 | `03-data-connectors.png` | Sentinel > Data connectors filtered to "Connected", or Content hub installed solutions | Step 3 |
 | `04-defender-device.png` | Defender portal > Assets > Devices, with the lab VM showing Onboarded / Active | Step 4 |
+| `04b-defender-mde-extension.png` | Defender portal > Device > Map: MDE extension deployed to vm-win-01 by Defender for Servers | Step 4 |
 | `05-analytics-rules.png` | Sentinel > Analytics > Active rules filtered to your custom rules | Step 5 |
 | `05-incident-page.png` | Incident page with entities, timeline, and your closing comment | Step 7 |
 | `INC-001-incident.png` ... | One per incident write-up | /incidents |

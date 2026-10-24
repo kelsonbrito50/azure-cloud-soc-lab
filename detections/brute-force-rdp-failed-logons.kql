@@ -6,8 +6,8 @@
 // Severity:       Medium
 // Schedule:       runs every 10 min, looks back 10 min
 // Threshold:      generate alert when results > 0
-// Entity mapping: Account = TargetAccount, Host = Computer, IP = IpAddress
-// Tested:         2026-10-24 - 18 failed RDP logons (2 accounts) from one IP in ~5 min; rule returned 1 row
+// Entity mapping: Host = Computer, IP = IpAddress (Account not mapped: TargetedAccounts is a set)
+// Tested:         2026-10-24 - Logs: 18 failed RDP logons from one IP, 1 row. Scheduled rule: 14 failures in 33 s, alert after 8 min, incident #1 (INC-001)
 // Tuning notes:   RDP with NLA logs failures as LogonType 3, not 10, so the rule does not filter by LogonType.
 //                 TargetAccount already includes the domain in SecurityEvent; do not prepend TargetDomainName.
 
