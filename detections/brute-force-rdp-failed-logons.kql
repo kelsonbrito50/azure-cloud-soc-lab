@@ -2,19 +2,19 @@
 // Detects:        10 or more failed Windows logons (Event ID 4625) from one source IP
 //                 against one host within 10 minutes, typical of RDP/SMB password guessing.
 // Data source:    SecurityEvent via Windows Security Events (AMA) data collection rule
-// MITRE ATT&CK:   Credential Access / T1110 Brute Force
+// MITRE ATT&CK:   Credential Access / T1110.001 Brute Force: Password Guessing
 // Severity:       Medium
 // Schedule:       runs every 10 min, looks back 10 min
 // Threshold:      generate alert when results > 0
 // Entity mapping: Account = TargetAccount, Host = Computer, IP = IpAddress
-// Tested:         [YYYY-MM-DD] - triggered with repeated wrong-password RDP attempts from a second VM
-// Tuning notes:   exclude your own admin IP only if it creates noise; document the exclusion here.
+// Tested:         2026-10-24 - 18 failed RDP logons (2 accounts) from one IP in ~5 min; rule returned 1 row
+// Tuning notes:   RDP with NLA logs failures as LogonType 3, not 10, so the rule does not filter by LogonType.
+//                 TargetAccount already includes the domain in SecurityEvent; do not prepend TargetDomainName.
 
 SecurityEvent
 | where TimeGenerated > ago(10m)
 | where EventID == 4625
 | where IpAddress != "-" and isnotempty(IpAddress)
-| extend TargetAccount = strcat(TargetDomainName, @"\", TargetAccount)
 | summarize
     FailedAttempts = count(),
     TargetedAccounts = make_set(TargetAccount, 20),
