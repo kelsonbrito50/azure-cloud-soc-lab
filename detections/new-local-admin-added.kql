@@ -7,7 +7,7 @@
 // Schedule:       runs every 5 min, looks back 5 min
 // Threshold:      generate alert when results > 0
 // Entity mapping: Account = MemberName (added account), Host = Computer; SubjectAccount = who did it
-// Tested:         not yet - triggered with: net localgroup Administrators testuser /add
+// Tested:         not yet - planned trigger: net localgroup Administrators testuser /add
 // Tuning notes:   none expected in a lab; in production exclude approved provisioning accounts.
 
 SecurityEvent

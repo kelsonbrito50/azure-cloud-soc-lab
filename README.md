@@ -1,8 +1,8 @@
-﻿# Azure Cloud SOC Lab
+﻿# Azure Cloud SOC Lab: Microsoft Sentinel, Defender for Endpoint, KQL
 
-A small security operations center in Azure. Logs from a Windows VM flow into a Log Analytics workspace, Microsoft Sentinel raises alerts from custom KQL rules, and Defender for Endpoint covers the host. Each detection is tested by generating the activity on the lab VM, and each incident is written up from alert to closure.
+A hands-on security operations center (SOC) in Azure, built for detection engineering and incident response practice. Logs from a Windows VM flow into a Log Analytics workspace, Microsoft Sentinel (SIEM) raises alerts from custom KQL rules, and Defender for Endpoint covers the host. Each detection is tested by generating the activity on the lab VM, and each incident is written up from alert to closure.
 
-**Stack:** Microsoft Sentinel, Microsoft Defender for Endpoint, Log Analytics, Azure Monitor Agent, KQL
+**Stack:** Microsoft Sentinel, Microsoft Defender for Endpoint, Log Analytics, Azure Monitor Agent, KQL, MITRE ATT&CK
 
 ## What's in this repo
 
@@ -13,6 +13,8 @@ A small security operations center in Azure. Logs from a Windows VM flow into a 
 | [`screenshots/`](screenshots/) | Portal screenshots of the workspace, its connection to Defender XDR, the onboarded VM in Defender for Endpoint, and incidents, with IDs, IPs and accounts redacted |
 
 **Highlight: [INC-001, RDP brute force (lab test)](incidents/INC-001-rdp-brute-force-lab-test.md).** An authorized test of the brute-force rule: 14 failed RDP logons in 33 seconds, alert 8 minutes after the last attempt, no successful logon from the source IP, closed as benign positive. The write-up covers the timeline, the KQL used to investigate, and what I changed in the rule afterwards.
+
+![Incident in Microsoft Defender](screenshots/INC-001-incident.png)
 
 ## How it works
 
@@ -28,3 +30,4 @@ A small security operations center in Azure. Logs from a Windows VM flow into a 
 - [x] Test the brute-force rule end to end and write up the incident ([INC-001](incidents/INC-001-rdp-brute-force-lab-test.md))
 - [ ] Trigger and document `new-local-admin-added.kql`
 - [ ] Trigger and document `suspicious-encoded-powershell.kql`
+- [ ] Architecture diagram
