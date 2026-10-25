@@ -20,7 +20,7 @@
 
 One paragraph: which analytics rule raised the alert, what the alert said, how many alerts were grouped into the incident, and what entities Sentinel mapped (account, host, IP).
 
-![Incident page](../screenshots/[INC-NNN]-incident.png)
+`![Incident page](../screenshots/[INC-NNN]-incident.png)`
 
 ## 2. Triage (first 5 minutes)
 
