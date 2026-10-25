@@ -1,18 +1,11 @@
 # Screenshots
 
-Capture these as you go. Cover subscription ID, tenant ID, device IDs, public IPs, MAC addresses, and your personal account name/email with solid black bars (not blur) before committing. Export each image as PNG with metadata removed.
+Subscription and tenant IDs, device IDs, public IPs and personal account names are redacted with solid black bars.
 
-| File name | What to show | Used in |
-|-----------|--------------|---------|
-| `architecture.png` | Diagram of VM -> AMA/DCR -> Log Analytics -> Sentinel, plus Defender XDR connector (draw.io, Excalidraw, or PowerPoint export) | README top |
-| `01-workspace.png` | Log Analytics workspace overview with retention and the budget alert | Step 1 |
-| `02-sentinel-overview.png` | Microsoft Sentinel > Overview, showing events ingested and incidents | Step 2 |
-| `03-data-connectors.png` | Sentinel > Data connectors filtered to "Connected", or Content hub installed solutions | Step 3 |
-| `04-defender-device.png` | Defender portal > Assets > Devices, with the lab VM showing Onboarded / Active | Step 4 |
-| `04b-defender-mde-extension.png` | Defender portal > Device > Map: MDE extension deployed to vm-win-01 by Defender for Servers | Step 4 |
-| `05-analytics-rules.png` | Sentinel > Analytics > Active rules filtered to your custom rules | Step 5 |
-| `05-incident-page.png` | Incident page with entities, timeline, and your closing comment | Step 7 |
-| `INC-001-incident.png` ... | One per incident write-up | /incidents |
-| `06-usage-cost.png` | Usage and estimated costs blade or Cost Management view for the lab resource group | Results |
-
-Keep images under ~1 MB each (PNG, cropped to the relevant panel).
+| File | What it shows |
+|------|---------------|
+| `01-workspace.png` | Log Analytics workspace `law-soc-lab` essentials: resource group, East US, pay-as-you-go tier, status Active |
+| `02-sentinel-overview.png` | Defender portal > Workspaces: `law-soc-lab` connected to Microsoft Defender XDR as the primary workspace |
+| `04-defender-device.png` | Defender portal > Device inventory > vm-win-01: Windows Server 2025, onboarded, Defender Antivirus active |
+| `04b-defender-mde-extension.png` | Defender portal > Device > Map: MDE extension deployed to vm-win-01 by Defender for Servers |
+| `INC-001-incident.png` | Sentinel incident #1 for the RDP brute-force lab test, used in [INC-001](../incidents/INC-001-rdp-brute-force-lab-test.md) |

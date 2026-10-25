@@ -12,7 +12,7 @@
 | MITRE ATT&CK | T1110.001 Brute Force: Password Guessing (TA0006 Credential Access) |
 | Affected host(s) | vm-win-01 |
 | Affected account(s) | testuser |
-| Source IP(s) | 203.0.113.10 (redacted, my home IP) |
+| Source IP(s) | 203.0.113.10 (placeholder; real source was my home IP, redacted) |
 | Final classification | Benign positive - suspicious but expected (authorized lab test) |
 
 ## 1. What fired

@@ -8,7 +8,7 @@
 // Schedule:       runs every 5 min, looks back 5 min
 // Threshold:      generate alert when results > 0
 // Entity mapping: Account = Account, Host = Computer, Process = NewProcessName
-// Tested:         [YYYY-MM-DD] - triggered with: powershell -enc <base64 of "Write-Host test">
+// Tested:         not yet - triggered with: powershell -enc <base64 of "Write-Host test">
 // Tuning notes:   4688 needs "Include command line in process creation events" enabled via local/group policy.
 
 SecurityEvent
