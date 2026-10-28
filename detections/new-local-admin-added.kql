@@ -1,18 +1,20 @@
 // Rule name:      Account added to local Administrators group
 // Detects:        A member was added to a security-enabled local group (Event ID 4732)
-//                 where the group is Administrators. Persistence or privilege escalation.
+//                 where the group is BUILTIN\Administrators. Persistence or privilege escalation.
 // Data source:    SecurityEvent via Windows Security Events (AMA)
-// MITRE ATT&CK:   Persistence / T1098 Account Manipulation; Privilege Escalation / T1078.003 Local Accounts
+// MITRE ATT&CK:   Persistence, Privilege Escalation / T1098.007 Account Manipulation: Additional Local or Domain Groups
 // Severity:       High
-// Schedule:       runs every 5 min, looks back 5 min
+// Schedule:       runs every 5 min, looks back 10 min (lookback > frequency for late AMA events)
 // Threshold:      generate alert when results > 0
-// Entity mapping: Account = MemberName (added account), Host = Computer; SubjectAccount = who did it
-// Tested:         not yet - planned trigger: net localgroup Administrators testuser /add
-// Tuning notes:   none expected in a lab; in production exclude approved provisioning accounts.
+// Entity mapping: Account (Sid) = MemberSid, Host (FullName) = Computer; SubjectAccount = who made the change
+// Tested:         not yet - planned trigger: local account created and added to Administrators via Azure Run Command
+// Tuning notes:   Group matched by SID S-1-5-32-544, so it works on any OS language ("Administradores" on pt-BR).
+//                 MemberName is "-" for local accounts; MemberSid is the reliable field.
+//                 Lookback 10 min on a 5 min schedule can raise the same event twice; incident grouping by entities absorbs it.
+//                 In production, exclude approved provisioning accounts.
 
 SecurityEvent
-| where TimeGenerated > ago(5m)
+| where TimeGenerated > ago(10m)
 | where EventID == 4732
-| where TargetUserName =~ "Administrators"
-| extend SubjectAccount = strcat(SubjectDomainName, @"\", SubjectUserName)
-| project TimeGenerated, Computer, SubjectAccount, MemberName, MemberSid, TargetUserName
+| where TargetSid == "S-1-5-32-544"   // BUILTIN\Administrators, any OS language
+| project TimeGenerated, Computer, SubjectAccount, SubjectUserSid, MemberSid, MemberName, GroupName = TargetUserName

@@ -1,26 +1,28 @@
 // Rule name:      PowerShell launched with an encoded command
-// Detects:        powershell.exe or pwsh.exe started with -EncodedCommand / -enc / -e and a Base64 payload.
-//                 Common in malware droppers and offensive tooling; rare in normal admin use.
+// Detects:        powershell.exe or pwsh.exe started with -EncodedCommand (or any accepted prefix: -e, -ec, -enc ...)
+//                 and a Base64 payload. Common in malware droppers and offensive tooling; rare in normal admin use.
 // Data source:    SecurityEvent (Event ID 4688 with command-line auditing enabled) via Windows Security Events (AMA).
 //                 Alternative: DeviceProcessEvents via the Microsoft Defender XDR connector (see second query).
-// MITRE ATT&CK:   Execution / T1059.001 PowerShell; Defense Evasion / T1027 Obfuscated Files or Information
+// MITRE ATT&CK:   Execution / T1059.001 PowerShell; Defense Evasion / T1027.010 Obfuscated Files or Information: Command Obfuscation
 // Severity:       Medium
-// Schedule:       runs every 5 min, looks back 5 min
+// Schedule:       runs every 5 min, looks back 10 min (lookback > frequency for late AMA events)
 // Threshold:      generate alert when results > 0
-// Entity mapping: Account = Account, Host = Computer, Process = NewProcessName
-// Tested:         not yet - planned trigger: powershell -enc <base64 of "Write-Host test">
-// Tuning notes:   4688 needs "Include command line in process creation events" enabled via local/group policy.
+// Entity mapping: Account (Sid) = SubjectUserSid, Host (FullName) = Computer, Process (CommandLine, ProcessId) = CommandLine, NewProcessId
+// Tested:         not yet - planned trigger: powershell -enc <base64 of "Write-Host INC003-test"> on the lab VM
+// Tuning notes:   4688 needs "Audit Process Creation" (success) and "Include command line in process creation events".
+//                 Parameter prefix may be "-", "/" or a Unicode dash (en dash, em dash, horizontal bar): all are accepted by powershell.exe.
+//                 No exclusions yet: baseline 7 days first, then exclude by ParentProcessName only what is proven legitimate.
 
 SecurityEvent
-| where TimeGenerated > ago(5m)
+| where TimeGenerated > ago(10m)
 | where EventID == 4688
-| where NewProcessName has_any ("powershell.exe", "pwsh.exe")
-| where CommandLine matches regex @"(?i)\s-(e|ec|en|enc|enco|encod|encode|encoded|encodedcommand)\s+[A-Za-z0-9+/=]{20,}"
-| project TimeGenerated, Computer, Account, NewProcessName, CommandLine, ParentProcessName
+| where NewProcessName endswith @"\powershell.exe" or NewProcessName endswith @"\pwsh.exe"
+| where CommandLine matches regex @"(?i)\s[-/\x{2013}\x{2014}\x{2015}](ec|e(n(c(o(d(e(d(c(o(m(m(a(n(d)?)?)?)?)?)?)?)?)?)?)?)?)?)\s+[A-Za-z0-9+/=]{20,}"
+| project TimeGenerated, Computer, SubjectUserSid, SubjectUserName, SubjectDomainName, NewProcessName, NewProcessId, CommandLine, ParentProcessName
 
 // --- Alternative using Defender XDR data (DeviceProcessEvents) ---
 // DeviceProcessEvents
-// | where TimeGenerated > ago(5m)
+// | where TimeGenerated > ago(10m)
 // | where FileName in~ ("powershell.exe", "pwsh.exe")
-// | where ProcessCommandLine matches regex @"(?i)\s-(e|ec|en|enc|enco|encod|encode|encoded|encodedcommand)\s+[A-Za-z0-9+/=]{20,}"
+// | where ProcessCommandLine matches regex @"(?i)\s[-/\x{2013}\x{2014}\x{2015}](ec|e(n(c(o(d(e(d(c(o(m(m(a(n(d)?)?)?)?)?)?)?)?)?)?)?)?)?)\s+[A-Za-z0-9+/=]{20,}"
 // | project TimeGenerated, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName

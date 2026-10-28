@@ -14,7 +14,7 @@ One analytics rule per file. Each `.kql` file starts with a comment header so th
 // Data source:    <table(s) and the connector that fills them>
 // MITRE ATT&CK:   <tactic> / <technique ID and name>
 // Severity:       <Informational | Low | Medium | High>
-// Schedule:       runs every <N> min, looks back <N> min   (lookback >= frequency)
+// Schedule:       runs every <N> min, looks back <N> min   (lookback > frequency)
 // Threshold:      generate alert when results > <N>
 // Entity mapping: Account = <column>, Host = <column>, IP = <column>
 // Tested:         <date> - triggered by <how you generated the activity>
