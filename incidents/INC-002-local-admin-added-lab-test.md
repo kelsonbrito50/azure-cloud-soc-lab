@@ -101,7 +101,7 @@ az monitor activity-log list -g <resource-group> --offset 6h --query "[?contains
 
 ## 6. Lessons learned
 
-1. Collection: the data collection rule misses the second half of the account lifecycle (4722, 4726, 4733). Next step: add them to `dcr-win-security`, then repeat the removal and confirm the events arrive.
+1. Collection: the data collection rule misses the second half of the account lifecycle (4722, 4726, 4733). Next step: add them to `dcr-win-security`, then repeat the removal and confirm the events arrive. **Done 28 Oct 2026:** the three events were added to the rule at 21:54 UTC. A retest at 23:30:41 UTC created a test account, enabled it, added it to and removed it from Remote Desktop Users (not Administrators, so this rule stays quiet), and deleted it. All six events (4720, 4724, 4722, 4732, 4733, 4726) reached Sentinel.
 2. Investigation: changes made through Azure Run Command appear as SYSTEM inside the VM. Attribution needs the Azure Activity Log. Run Command itself is worth a detection (who ran it, on which VM, outside a change window).
 3. Detection: a 10-minute lookback on a 5-minute schedule raised two alerts for one event. Alert grouping kept them in one incident, which is the trade-off I accepted to avoid missing late events from the agent.
 4. Detection: matching the group by SID (S-1-5-32-544) instead of the name "Administrators" keeps the rule working on any Windows language, and mapping the account by `MemberSid` keeps the entity populated for local accounts.
