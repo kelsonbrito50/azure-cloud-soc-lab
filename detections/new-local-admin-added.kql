@@ -7,10 +7,12 @@
 // Schedule:       runs every 5 min, looks back 10 min (lookback > frequency for late AMA events)
 // Threshold:      generate alert when results > 0
 // Entity mapping: Account (Sid) = MemberSid, Host (FullName) = Computer; SubjectAccount = who made the change
-// Tested:         not yet - planned trigger: local account created and added to Administrators via Azure Run Command
+// Tested:         2026-10-28 - local account created and added to Administrators via Azure Run Command at 15:00:11 UTC;
+//                 incident #2 at 15:06:46 (6 min 35 s), two alerts grouped into one incident (INC-002)
 // Tuning notes:   Group matched by SID S-1-5-32-544, so it works on any OS language ("Administradores" on pt-BR).
 //                 MemberName is "-" for local accounts; MemberSid is the reliable field.
 //                 Lookback 10 min on a 5 min schedule can raise the same event twice; incident grouping by entities absorbs it.
+//                 Created through the REST API with technique T1098; the sub-technique T1098.007 is in the rule description.
 //                 In production, exclude approved provisioning accounts.
 
 SecurityEvent

@@ -26,7 +26,7 @@ One analytics rule per file. Each `.kql` file starts with a comment header so th
 | File | Status | Last tested |
 |------|--------|-------------|
 | `brute-force-rdp-failed-logons.kql` | Enabled | 2026-10-24 |
-| `new-local-admin-added.kql` | Not yet triggered | — |
+| `new-local-admin-added.kql` | Enabled | 2026-10-28 |
 | `suspicious-encoded-powershell.kql` | Not yet triggered | — |
 | `_TEMPLATE.kql` | Template, not deployed | n/a |
 
