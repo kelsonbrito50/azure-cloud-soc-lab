@@ -30,5 +30,6 @@ A hands-on security operations center (SOC) in Azure, built for detection engine
 - [x] Test the brute-force rule end to end and write up the incident ([INC-001](incidents/INC-001-rdp-brute-force-lab-test.md))
 - [x] Trigger and document `new-local-admin-added.kql` ([INC-002](incidents/INC-002-local-admin-added-lab-test.md))
 - [ ] Add account removal and deletion events (4722, 4726, 4733) to the data collection rule
-- [ ] Trigger and document `suspicious-encoded-powershell.kql`
+- [x] Trigger and document `suspicious-encoded-powershell.kql` ([INC-003](incidents/INC-003-encoded-powershell-lab-test.md))
+- [ ] Group alerts of the encoded PowerShell rule by host and account, so one event gives one incident
 - [ ] Architecture diagram

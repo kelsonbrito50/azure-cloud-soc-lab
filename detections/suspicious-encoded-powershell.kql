@@ -8,10 +8,13 @@
 // Schedule:       runs every 5 min, looks back 10 min (lookback > frequency for late AMA events)
 // Threshold:      generate alert when results > 0
 // Entity mapping: Account (Sid) = SubjectUserSid, Host (FullName) = Computer, Process (CommandLine, ProcessId) = CommandLine, NewProcessId
-// Tested:         not yet - planned trigger: powershell -enc <base64 of "Write-Host INC003-test"> on the lab VM
+// Tested:         2026-10-28 - -EncodedCommand and -enc with the Base64 of "Write-Host INC003-test" at 16:13:55 UTC via Azure Run Command;
+//                 incident #3 at 16:21:21 (7 min 26 s); no other PowerShell on the VM matched (INC-003)
 // Tuning notes:   4688 needs "Audit Process Creation" (success) and "Include command line in process creation events".
 //                 Parameter prefix may be "-", "/" or a Unicode dash (en dash, em dash, horizontal bar): all are accepted by powershell.exe.
 //                 No exclusions yet: baseline 7 days first, then exclude by ParentProcessName only what is proven legitimate.
+//                 Created through the REST API with techniques T1059 and T1027; sub-techniques are in the rule description.
+//                 Alert grouping "all entities match" split one event into two incidents (Process entity); group by Host + Account instead.
 
 SecurityEvent
 | where TimeGenerated > ago(10m)
